@@ -1,6 +1,6 @@
 clear all;
 
-% Replicate Figure 1.2 in ABCs
+% Replicate Figure 1.3 in ABCs
 % specify parameters
 A_tilde = 1;    % steady-state technology
 n = 0.02;       % pop growth

@@ -21,33 +21,7 @@ $$
 Y_t = A_t K_t^\alpha L_t^{1-\alpha}
 $$
 
-The model's building blocks are
-
-$$
-C_t^{\sigma} L_t^{\varphi} = W_t, \\
-	1 = \beta \mathbb{E}_t\left[ \frac{C_t}{C_{t+1}} (R_{t+1} + 1 - \delta)\right], \\
-	R_t = \alpha \frac{Y_t}{K_t}, \\ 
-	W_t = (1-\alpha)\frac{Y_t}{L_t}, \\
-	Y_t = A_t K_t^\alpha L_t^{1-\alpha}, \\
-	K_{t+1} = (1-\delta)K_t + I_t, \\
-	C_t + I_t = Y_t, \\
-	A_t = e^{z_t}, z_{t+1} = \rho_A z_t + \varepsilon_t, \varepsilon_t ~ N(0,\sigma^2_A)
-$$
-
-Log-linearized version 
-
-$$
-0 \approx \tilde{Y}_t - \frac{\tilde{L}_t}{1-\overline{L}} - \tilde{C}_t, \\
-0 \approx \tilde{C}_t - \mathbb{E}_t \tilde{C}_{t+1} + \beta \overline{R} \mathbb{E}_t \tilde{R}_{t+1}, \\
-0 \approx \tilde{Y}_t - \tilde{K}_t - \tilde{R}_t, \\
-0 \approx z_t + \alpha \tilde{K}_t + (1-\alpha) \tilde{L}_t - \tilde{Y}_t, \\
-0 \approx \overline{Y}\tilde{Y}_t - \overline{C}\tilde{C}_t + \overline{K}[(1-\delta)\tilde{K}_t - \tilde{K}_{t+1}], \\
-z_{t+1} = \rho z_t + \varepsilon_t
-$$
-
-where $\tilde{x}_t = \ln x_t - \ln \overline{x}$.
-
-The steady-state variables $\overline{x}$ can be calculated either by hand or with Dynare.
+This is a very simple and standard RBC model.
 
 ## Dynare codes
 

@@ -159,8 +159,10 @@ Although this simple RBC model does not capture the economy described in the dat
 
 ### Eyeball Simulation
 
-See the `console.m`
+See the `console.m`.
 
-![](https://raw.githubusercontent.com/thanhqtran/gso-macro-monitor/main/generated_gif/simulated.png)
+This calibration takes the movements of `y` as observed data.
+
+![](https://raw.githubusercontent.com/thanhqtran/rbc/main/plots/kalman.png)
 
 

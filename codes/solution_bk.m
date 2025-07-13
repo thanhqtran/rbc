@@ -81,7 +81,7 @@ disp(eigenvalues);
 
 fprintf('--- Blanchard-Kahn Conditions ---\n');
 fprintf('Number of unstable eigenvalues: %d\n', num_unstable);
-fprintf('Number of jump variables (ny): %d\n', nx);
+fprintf('Number of jump variables (ny): %d\n', ny);
 
 if num_unstable ~= ny
     error('Blanchard-Kahn conditions are NOT satisfied. A unique stable solution does not exist.');
@@ -162,3 +162,94 @@ fprintf('---------------------------------------\n');
 %% ============================
 R = [C;-N];
 S = [D;-L];
+
+%% ============================
+%% Impulse response
+%% ============================
+rhoa = .95;
+
+% one-time shock with epsilon = .01
+T = 80; %time horizon
+
+tilde_k = zeros(1,T);
+tilde_y = zeros(1,T);
+tilde_c = zeros(1,T);
+tilde_n = zeros(1,T);
+tilde_w = zeros(1,T);
+tilde_r = zeros(1,T);
+tilde_i = zeros(1,T);
+tilde_A = zeros(1,T);
+epsilon = zeros(1,T);
+
+% one-time shock
+s = 2;
+epsilon(s) = 0.01; %standard error of shock
+
+for t = s:T-1
+    tilde_k(t+1) = R(1,1) * tilde_k(t) + R(1,2) * tilde_A(t-1) + S(1)*epsilon(t);
+    tilde_A(t)   = R(2,1) * tilde_k(t) + R(2,2) * tilde_A(t-1) + S(2)*epsilon(t);
+    tilde_y(t)   = R(3,1) * tilde_k(t) + R(3,2) * tilde_A(t-1) + S(3)*epsilon(t);
+    tilde_c(t)   = R(4,1) * tilde_k(t) + R(4,2) * tilde_A(t-1) + S(4)*epsilon(t);
+    tilde_r(t)   = R(5,1) * tilde_k(t) + R(5,2) * tilde_A(t-1) + S(5)*epsilon(t);
+    tilde_n(t)   = (-alpha*tilde_k(t) - tilde_A(t) + tilde_y(t))/(1-alpha);
+    tilde_w(t)   = eta*tilde_c(t) + phi*tilde_n(t);
+    tilde_i(t)   = (tilde_k(t+1) - (1-delta)*tilde_k(t))/delta;
+end
+
+variables = {tilde_y,tilde_c,tilde_n,tilde_w,tilde_r,tilde_i, tilde_k, tilde_A};
+labels = {'y', 'c', 'n', 'w', 'r', 'i', 'k', 'A'};
+horizon = s+1:T-1; %choose the horizon after the shock
+
+figure;
+for i = 1:length(variables)
+    subplot(3,3,i);
+    plot(horizon, variables{i}(horizon), 'b', 'LineWidth', 1); %
+    hold on;
+    title(labels{i});
+    yline(0, 'Color','r', 'LineWidth', 1); % Zero line in red
+    grid on;
+end
+
+%% ======================
+% stochastic simulation
+%% ======================
+T = 1000; %nbumber of periods
+sigmae = 0.01;
+ 
+tilde_k = zeros(1,T);
+tilde_y = zeros(1,T);
+tilde_c = zeros(1,T);
+tilde_n = zeros(1,T);
+tilde_w = zeros(1,T);
+tilde_r = zeros(1,T);
+tilde_i = zeros(1,T);
+tilde_A = zeros(1,T);
+ 
+% a series of random shocks
+randn('seed',666);
+epsilon = sigmae*randn(1,T);
+% the time series
+for t = s:T-1
+    tilde_k(t+1) = R(1,1) * tilde_k(t) + R(1,2) * tilde_A(t-1) + S(1)*epsilon(t);
+    tilde_A(t)   = R(2,1) * tilde_k(t) + R(2,2) * tilde_A(t-1) + S(2)*epsilon(t);
+    tilde_y(t)   = R(3,1) * tilde_k(t) + R(3,2) * tilde_A(t-1) + S(3)*epsilon(t);
+    tilde_c(t)   = R(4,1) * tilde_k(t) + R(4,2) * tilde_A(t-1) + S(4)*epsilon(t);
+    tilde_r(t)   = R(5,1) * tilde_k(t) + R(5,2) * tilde_A(t-1) + S(5)*epsilon(t);
+    tilde_n(t)   = (-alpha*tilde_k(t) - tilde_A(t) + tilde_y(t))/(1-alpha);
+    tilde_w(t)   = eta*tilde_c(t) + phi*tilde_n(t);
+    tilde_i(t)   = (tilde_k(t+1) - (1-delta)*tilde_k(t))/delta;
+end
+ 
+variables = {tilde_y,tilde_c,tilde_n,tilde_w,tilde_r,tilde_i, tilde_k, tilde_A, epsilon};
+labels = {'y', 'c', 'n', 'w', 'r', 'i', 'k', 'A', 'e'};
+horizon = s:200; %choose the horizon after the shock
+ 
+figure;
+for i = 1:length(variables)
+    subplot(3,3,i);
+    plot(horizon, variables{i}(horizon), 'b', 'LineWidth', 1); %
+    hold on;
+    title(labels{i});
+    yline(0, 'Color','r', 'LineWidth', 1); % Zero line in red
+    grid on;
+end

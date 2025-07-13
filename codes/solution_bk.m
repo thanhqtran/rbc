@@ -147,13 +147,9 @@ D = inv_term_C \ (G1 - A12 * L);
 
 %% == Step 7: Display Results ==
 fprintf('--- SOLVED POLICY FUNCTION MATRICES ---\n');
-fprintf('Matrix N (relates controls to states, y_t = -N*x_t + ...):\n');
 disp(N);
-fprintf('Matrix L (relates controls to shocks, y_t = ... -L*eps_t):\n');
 disp(L);
-fprintf('Matrix C (state transition, x_{t+1} = C*x_t + ...):\n');
 disp(C);
-fprintf('Matrix D (state impulse response, x_{t+1} = ... + D*eps_t):\n');
 disp(D);
 fprintf('---------------------------------------\n');
 

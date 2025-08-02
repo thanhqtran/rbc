@@ -1,15 +1,18 @@
-% Christiano (2002)'s method of undermined coefficients
+% Uhlig and Christiano (2002)'s method of undermined coefficients
 clear all;
 
-%params
-alpha = 0.35;
-beta = 0.985;
-eta = 2;
-phi = 1.5;
-delta = 0.025;
-rhoa = 0.95;
+%=========================================================
+% ======= PARAMETERS =====================================
+%% normally, we calibrate beta, delta and estimate the rest
+beta = 0.985;          %intertemporal discount
+delta = 0.025;         %depreciation rate
+alpha = 0.35;          %capital share
+eta = 2;               %Coefficient of Relative Risk Aversion, intertemporal elasticity of substitution is 1/eta
+phi = 1.5;             %Inverse Frisch Elasticity of Labor Supply, Frisch elasticity is 1/phi
+rhoa = 0.95;           %persistence of shocks
 
 % Step 1: Compute the steady-state of all variables
+%==================================================
 rss = 1 / beta + delta - 1;
 wss = (1-alpha) * ((alpha/rss)^(alpha/(1-alpha)));
 nss = ((wss^(1/eta))/( wss/(1-alpha) - delta*((wss/(1-alpha))^(1/alpha) ) ))^(1/(phi/eta + 1));
@@ -19,7 +22,8 @@ kss = ((alpha/rss)^(1/(1-alpha)))*nss;
 yss = kss^alpha * nss^(1-alpha);
 disp([rss, wss, yss, iss, css, nss, kss]);
 
-%% The model has the form
+%% The model in linearized form
+%==================================================
 %% x_t = [ \tilde{k}_t ]
 %% y_t = \begin{bmatrix}
 %%		\tilde{y}_t \\
@@ -56,6 +60,8 @@ L = [0];
 M = [0];
 N = [rhoa];
 
+% Solving auxiliary matrices
+%==================================================
 % Solve for P (quadratic equation)
 C_inv = inv(C);
 a = F - J * C_inv*A;
@@ -94,9 +100,8 @@ disp('S = '); disp(S);
 %%=============================
 % Impulse Response Functions
 %%=============================
-rhoa = .95;
 
-% one-time shock with epsilon = .01
+% A one-time shock with the maginitude of 1 standard deviation
 T = 80; %time horizon
 
 tilde_k = zeros(1,T);
@@ -140,10 +145,8 @@ end
 %%===========================
 %% Stochastic simulation
 %%===========================
-rhoa = .95;
 sigmae = 0.01;
 
-% one-time shock with epsilon = .01
 T = 1000; %nbumber of periods
 
 tilde_k = zeros(1,T);

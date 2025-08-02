@@ -130,7 +130,7 @@ end
 
 variables = {tilde_y,tilde_c,tilde_n,tilde_w,tilde_r,tilde_i, tilde_k, tilde_A};
 labels = {'y', 'c', 'n', 'w', 'r', 'i', 'k', 'A'};
-horizon = s+1:T-1; %choose the horizon after the shock
+horizon = 1:T-1; %choose the horizon after the shock
 
 figure;
 for i = 1:length(variables)
@@ -175,7 +175,7 @@ end
 
 variables = {tilde_y,tilde_c,tilde_n,tilde_w,tilde_r,tilde_i, tilde_k, tilde_A, e};
 labels = {'y', 'c', 'n', 'w', 'r', 'i', 'k', 'A', 'e'};
-horizon = s:200; %choose the horizon after the shock
+horizon = 1:200; %choose the horizon after the shock
 
 figure;
 for i = 1:length(variables)
